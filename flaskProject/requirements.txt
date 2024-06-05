@@ -1,5 +1,9 @@
 # 패키지 설치 파일
 # File -> Settings -> Editor -> File Encoding -> project setting -> UTF-8
 # File - Settings - Editor - General - Console -> Default Encoding -> UTF-8
-# 명령어 : pip install -r requirements.txt
+# 명령어 :
+# python.exe -m pip install --upgrade
+# pip install -r requirements.txt
+
 numpy
+flask
