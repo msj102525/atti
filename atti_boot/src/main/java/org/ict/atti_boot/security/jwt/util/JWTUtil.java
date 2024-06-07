@@ -21,7 +21,15 @@ import java.util.Optional;
 @Component
 @Slf4j
 public class JWTUtil {
-
+    //파싱 테스트입니다.--------------------------------------------
+     public Claims parseJwt(String jwt) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(jwt)
+                .getBody();
+        return claims;
+    }
+    //----------------------------------------------------------------------
     // JWT 생성과 검증에 사용될 비밀키와 만료 시간을 필드로 선언합니다.
     private final SecretKey secretKey;
     private final UserRepository userRepository;
@@ -47,15 +55,16 @@ public class JWTUtil {
         //boolean isAdmin = "A".equals(user.get().getUserType());
         boolean isAdmin = user.get().getUserType() == 'A';
 
-
-        // JWT를 생성합니다. 여기서는 사용자 이메일을 주체(subject)로, 관리자 여부를 클레임으로 추가합니다.
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setSubject(userEmail)
                 .claim("admin", isAdmin) // "admin" 클레임에 관리자 여부를 설정합니다.
                 .claim("category",category)
                 .setExpiration(new Date(System.currentTimeMillis() + expiredMs)) // 만료 시간을 설정합니다.
                 .signWith(secretKey, SignatureAlgorithm.HS256) // 비밀키와 HS256 알고리즘으로 JWT를 서명합니다.
                 .compact(); // JWT 문자열을 생성합니다.
+        // JWT를 생성합니다. 여기서는 사용자 이메일을 주체(subject)로, 관리자 여부를 클레임으로 추가합니다.
+        log.info("generate token : "+token);
+        return token;
     }
 
     // JWT에서 사용자 이메일을 추출합니다.
@@ -66,7 +75,8 @@ public class JWTUtil {
 
     // JWT의 만료 여부를 검증합니다.
     public boolean isTokenExpired(String token) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+        Claims claims = parseJwt(token);
+        //Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
         return claims.getExpiration().before(new Date());
     }
 

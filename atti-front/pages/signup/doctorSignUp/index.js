@@ -34,6 +34,7 @@ export default function doctorSignUp() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    isAdmin: "Y",
   });
   // useEffect(() => {
   //   if (emailValid && pwValid) {
