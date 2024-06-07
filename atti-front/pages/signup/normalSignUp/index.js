@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import styles from '../../../styles/signUp/doctorSignUp.module.css';
+import { singUp } from '../../api/user';
+
 export default function NormalSignUp() {
  
   const [formData, setFormData] = useState({
@@ -41,7 +43,8 @@ const handleSubmit = async (e) => {
     };
 
     try {
-        await axios.post('/signup', signUpData);
+        await singUp(signUpData);
+        // await axios.post('/signup', signUpData);
         setSuccessMessage('회원가입이 성공적으로 완료되었습니다. 로그인 페이지로 이동해주세요.');
         setFormData({
             userId: '',

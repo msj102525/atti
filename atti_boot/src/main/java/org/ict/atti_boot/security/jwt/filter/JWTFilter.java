@@ -35,6 +35,7 @@ public class JWTFilter extends OncePerRequestFilter {
     // 필터의 주요 로직을 구현하는 메서드입니다.
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.debug("JWTFilter 오류");
         // 요청에서 'Authorization' 헤더를 추출합니다.
         String authorization = request.getHeader("Authorization");
 
