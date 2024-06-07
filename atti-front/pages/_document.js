@@ -1,14 +1,17 @@
-import { Html, Head, Main, NextScript } from "next/document";
+import { Html, Head, Main, NextScript } from 'next/document';
+import Header from './common/header';
 
 export default function Document() {
+
   return (
     <Html lang="en">
       <Head />
       <body>
-        <a href="https://google.com">Google</a>
+        <Header />
         <Main />
         <NextScript />
       </body>
     </Html>
   );
 }
+
