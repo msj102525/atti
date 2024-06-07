@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "dotenv": "^16.4.5",
     "next": "14.2.3",
     "oracledb": "^6.5.1",
@@ -16,6 +17,14 @@
     "react-dom": "^18",
     "react-router-dom": "^6.23.1",
     "react-table": "^7.8.0"
+=======
+    "axios": "^1.7.2",
+    "mobx-react": "^9.1.1",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-query": "^3.39.3"
+>>>>>>> 19f63e72f728be610f54054b6eb5d416c46e0fb6
   },
   "devDependencies": {
     "postcss": "^8",
