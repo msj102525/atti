@@ -43,7 +43,7 @@
   border: 1px solid #e2e0e0;
 }
 .inputWrap:focus-within {
-  border: 1px solid #9e30f4;
+  border: 1px solid mediumaquamarine;
 }
 .inputWrapForLicense {
   display: flex;
@@ -71,19 +71,28 @@
   justify-content: center;
   align-items: center;
 }
-.license {
+.emailButton {
   margin-left: 10px;
   height: 48px;
   width: auto;
   border: none;
   font-weight: bold;
   border-radius: 64px;
-  background-color: mediumaquamarine;
   color: white;
   margin-bottom: 16px;
   cursor: pointer;
 }
-
+.codeButton {
+  margin-left: 10px;
+  height: 48px;
+  width: auto;
+  border: none;
+  font-weight: bold;
+  border-radius: 64px;
+  color: white;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
 .input::placeholder {
   color: #dadada;
 }
@@ -109,5 +118,12 @@
   margin-top: 8px;
   margin-bottom: 10px;
   color: #ef0000;
+  font-size: 12px;
+}
+.successMessageWrap {
+  margin-top: 8px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  color: mediumaquamarine;
   font-size: 12px;
 }
