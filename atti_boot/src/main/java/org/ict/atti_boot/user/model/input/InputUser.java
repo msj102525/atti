@@ -15,8 +15,8 @@ public class InputUser {
     private String userName;
     private LocalDate birthDate;
 
-    public InputUser(String userName) {
-
-        this.email = userName;
-    }
+//    public InputUser(String userName) {
+//
+//        this.email = userName;
+//    }
 }

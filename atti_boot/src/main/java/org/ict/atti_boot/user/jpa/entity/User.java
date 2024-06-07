@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.ict.atti_boot.user.model.dto.UserDto;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name = "USER_NAME", nullable = false)
+    @Column(name = "USER_NAME")
     private String userName;
 
     @Column(name = "NICK_NAME")
@@ -34,16 +35,16 @@ public class User {
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "PHONE", nullable = false)
+    @Column(name = "PHONE")
     private String phone;
 
     @Column(name = "BIRTH_DATE")
     private LocalDate birthDate;
 
-    @Column(name = "USER_TYPE", nullable = false)
+    @Column(name = "USER_TYPE")
     private Character userType;
 
-    @Column(name = "GENDER", nullable = false)
+    @Column(name = "GENDER")
     private Character gender;
 
     @Column(name = "PROFILE_URL")

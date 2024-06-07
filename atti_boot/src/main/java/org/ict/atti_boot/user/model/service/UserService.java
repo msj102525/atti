@@ -38,9 +38,11 @@ public class UserService {
     private User createUser(InputUser user) {
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         return User.builder()
-                .userId(String.valueOf(UUID.randomUUID()))
+                .userId(user.getUserId())
+                .userName(user.getUserName())
                 .email(user.getEmail())
                 .password(encodedPassword)
+                .userType('U')
 
                 .build();
     }
@@ -60,7 +62,7 @@ public class UserService {
     }
 
     public void saveUser(User user) {
-        log.info("user");
+        log.debug("User name: {}", user.getUserName());
         userRepository.save(user);
     }
 }
