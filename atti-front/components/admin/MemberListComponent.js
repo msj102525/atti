@@ -1,58 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from "mobx-react";
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-<<<<<<< HEAD
-import { getMemberList, deleteMember, searchMember } from "../../api/member";
-=======
-//import { getMemberList, deleteMember, searchMember } from "../../api/member";
->>>>>>> 53403f5f0fda5987bea38a9eff92e3ef9c37c131
-import { handleAxiosError } from "../../api/errorAxiosHandle";
+import MemberCard from "/components/admin/MemberCard"; // MemberCard 컴포넌트 가져오기
+//import { getMemberList, deleteMember } from "../../api/member"; // 회원 관련 API 함수 가져오기
+//import { handleAxiosError } from "../../api/errorAxiosHandle"; // 오류 처리 함수 가져오기
 
 const MemberListComponent = observer(() => {
-    const [searchField, setSearchField] = React.useState("");
-    const [searchInput, setSearchInput] = React.useState("");
-    const [page, setPage] = useState(1);
-    const [size, setSize] = useState(10);
-    const queryClient = useQueryClient();
-    const [isAdmin, setIsAdmin] = React.useState(false);
+    const [searchField, setSearchField] = useState(""); // 검색 필드 상태
+    const [searchInput, setSearchInput] = useState(""); // 검색 입력 상태
+    const [page, setPage] = useState(1); // 현재 페이지 상태
+    const [size, setSize] = useState(10); // 페이지 크기 상태
+    const queryClient = useQueryClient(); // React Query 클라이언트
+    const [isAdmin, setIsAdmin] = useState(false); // 관리자 여부 상태
 
+    // 회원 리스트 가져오기
     const { data, isLoading } = useQuery(['memberList', { page, size, searchField }], () => getMemberList({
         searchField,
         page: page - 1,
         size: size,
     }), {
-        keepPreviousData: true,
+        keepPreviousData: true, // 이전 데이터를 유지
     });
 
+    // 회원 삭제 뮤테이션
     const deleteMemberMutation = useMutation(deleteMember, {
         onSuccess: () => {
-            queryClient.invalidateQueries('memberList');
+            queryClient.invalidateQueries('memberList'); // 회원 리스트 쿼리 무효화
         },
-        onError: handleAxiosError,
+        onError: handleAxiosError, // 오류 처리
     });
 
+    // 검색 입력 변경 핸들러
     const handleSearchChange = (e) => setSearchInput(e.target.value);
 
+    // 검색 실행
     const executeSearch = () => setSearchField(searchInput);
 
+    // Enter 키 눌렀을 때 검색 실행
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             executeSearch();
         }
     };
 
+    // 페이지 크기 변경 핸들러
     const handleSizeChange = (e) => setSize(e.target.value);
 
+    // 관리자 여부 설정
     useEffect(() => {
         setIsAdmin(localStorage.getItem("isAdmin") === "true");
     }, []);
 
+    // 회원 삭제 핸들러
     const handleDelete = (memberId) => {
         deleteMemberMutation.mutate(memberId);
     };
 
-    if (isLoading) return <div>Loading...</div>;
-    if (!data) return <div>No data</div>;
+    if (isLoading) return <div>Loading...</div>; // 로딩 중일 때 표시
+    if (!data) return <div>No data</div>; // 데이터가 없을 때 표시
 
     return (
         <div className="container mt-5">
@@ -79,22 +84,12 @@ const MemberListComponent = observer(() => {
                 </thead>
                 <tbody>
                     {data.members.map(member => (
-                        <tr key={member.id}>
-                            <td style={{ width: "5vw", textAlign: "center" }}>{member.username}</td>
-                            <td style={{ textAlign: "left" }}>{member.name}</td>
-                            <td style={{ width: "10vw", textAlign: "center" }}>{member.email}</td>
-                            <td style={{ width: "7vw", textAlign: "center" }}>{member.joinDate}</td>
-                            <td style={{ width: "4vw", textAlign: "center" }}>
-                                {isAdmin && (
-                                    <button onClick={() => handleDelete(member.id)}>삭제</button>
-                                )}
-                            </td>
-                        </tr>
+                        <MemberCard key={member.id} member={member} onDelete={handleDelete} />
                     ))}
                 </tbody>
             </table>
             <div>
-                {/* 페이지네이션 구현 (현재 페이지: {page})*/}
+                페이지네이션 구현 (현재 페이지: {page})
                 {/* 페이지네이션 로직 추가 */}
             </div>
         </div>
