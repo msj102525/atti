@@ -8,6 +8,8 @@ import org.ict.atti_boot.user.jpa.entity.SocialLogin;
 import org.ict.atti_boot.user.jpa.entity.TokenLogin;
 import org.ict.atti_boot.user.jpa.entity.User;
 import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Set;
 

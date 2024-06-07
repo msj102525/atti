@@ -38,9 +38,11 @@ public class UserService {
     private User createUser(InputUser user) {
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         return User.builder()
-                .userId(String.valueOf(UUID.randomUUID()))
+                .userId(user.getUserId())
+                .userName(user.getUserName())
                 .email(user.getEmail())
                 .password(encodedPassword)
+                .userType('U')
 
                 .build();
     }
@@ -57,5 +59,10 @@ public class UserService {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이메일이 이미 사용중입니다.");
                 });
         return userRepository.save(user);
+    }
+
+    public void saveUser(User user) {
+        log.debug("User name: {}", user.getUserName());
+        userRepository.save(user);
     }
 }

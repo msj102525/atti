@@ -2,7 +2,6 @@ import styles from "../../styles/doctor/selectSignUp.module.css";
 import { useRouter } from "next/router";
 
 export default function SignUp() {
-  /* 로고 임포트 하기 */
 
   const router = useRouter();
 
