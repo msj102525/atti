@@ -13,7 +13,7 @@ export default function doctorSignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [birthDate, setBirthDate] = useState("");
-  const [license, setLicense] = useState("");
+  const [code, setCode] = useState("");
 
   const [idValid, setIdValid] = useState(true);
   const [pwValid, setPwValid] = useState(true);
@@ -22,7 +22,11 @@ export default function doctorSignUp() {
   const [nameValid, setNameValid] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
   const [birthDateValid, setBirthDateValid] = useState(true);
-  const [licenseValid, setLicenseValid] = useState(true);
+  const [codeInput, setCodeInptut] = useState(false);
+
+  //이메일 인증관련
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
   // useEffect(() => {
   //   if (emailValid && pwValid) {
   //     setNotAllow(false);
@@ -30,7 +34,18 @@ export default function doctorSignUp() {
   //   }
   //   setNotAllow(true);
   // }, [emailValid, pwValid]);
-
+  const handleEmailVerification = () => {
+    // 랜덤 코드 생성
+    const verificationCode = Math.floor(100000 + Math.random() * 900000);
+    setCode(verificationCode);
+    // 랜덤 코드 출력 (실제로는 이메일 전송으로 대체되어야 함)
+    console.log(`Verification code sent to ${email}: ${verificationCode}`);
+  };
+  const validCode = (e) => {};
+  const sendCode = (e) => {
+    setCodeInptut(true);
+    handleEmailVerification();
+  };
   const handleId = (e) => {
     setId(e.target.value);
     const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{4,20}$/;
@@ -71,7 +86,7 @@ export default function doctorSignUp() {
   const handleEmail = (e) => {
     const emailValue = e.target.value;
     setEmail(emailValue);
-    if (emailValue.includes("@")) {
+    if (emailValue.includes("@kma.org")) {
       setEmailValid(true);
     } else {
       setEmailValid(false);
@@ -88,8 +103,8 @@ export default function doctorSignUp() {
       setBirthDateValid(false);
     }
   };
-  const handleLicense = (e) => {
-    console.log(e.target.value);
+  const handleVerificationCode = (e) => {
+    setVerificationCode(e.target.value);
   };
   const onClickConfirmButton = () => {
     if (email === User.email && pw === User.pw) {
@@ -98,17 +113,16 @@ export default function doctorSignUp() {
       alert("등록되지 않은 회원입니다.");
     }
   };
-  const licenseValidCheck = async () => {
-    try {
-      const data = await licenseValid(formData);
-      if (data.result === "SUCCESS") {
-        setMessage("인증 성공");
-        // 추가적인 가입 절차를 진행
-      } else {
-        setMessage(`인증 실패: ${data.data.ERRMSG}`);
-      }
-    } catch (error) {
-      setMessage("서버 오류가 발생했습니다.");
+
+  //이메일인증
+  const verifyCode = (e) => {
+    // 입력된 코드와 랜덤 생성된 코드가 일치하는지 확인
+    console.log(e.target.value);
+    console.log(code);
+    if (e.target.value == code) {
+      setIsVerified(true);
+    } else {
+      setIsVerified(false);
     }
   };
   return (
@@ -171,18 +185,48 @@ export default function doctorSignUp() {
           {!nameValid && <div>올바른 이름을 입력해주세요</div>}
         </div>
         <div className={styles.inputTitle}>이메일주소</div>
-        <div className={styles.inputWrap}>
-          <input
-            className={styles.input}
-            type="email"
-            placeholder="ex ) example@example.com"
-            value={email}
-            onChange={handleEmail}
-          />
+        <div className={styles.licenseDiv}>
+          <div className={styles.inputWrapForLicense}>
+            <input
+              className={styles.input}
+              type="email"
+              placeholder="의사협회 이메일을 입력해주세요"
+              value={email}
+              onChange={handleEmail}
+            />
+          </div>
+          <div className={styles.buttonDiv}>
+            <button className={styles.license} onClick={sendCode}>
+              확인코드 전송
+            </button>
+          </div>
         </div>
         <div className={styles.errorMessageWrap}>
           {!emailValid && <div>올바른 이메일을 입력해주세요</div>}
         </div>
+        {codeInput && (
+          <div>
+            <div className={styles.inputTitle}>인증 코드</div>
+            <div className={styles.licenseDiv}>
+              <div className={styles.inputWrapForLicense}>
+                <input
+                  className={styles.input}
+                  type="text"
+                  placeholder="이메일로 전송온 코드를 입력해주세요!"
+                  onChange={verifyCode}
+                />
+              </div>
+              <div className={styles.buttonDiv}>
+                <button className={styles.license} onClick={validCode}>
+                  이메일 인증
+                </button>
+              </div>
+            </div>
+            <div className={styles.errorMessageWrap}>
+              {!isVerified && <div>코드가 일치하지 않습니다!</div>}
+            </div>
+          </div>
+        )}
         <div className={styles.inputTitle}>생년월일</div>
         <div className={styles.inputWrap}>
           <input
@@ -194,24 +238,6 @@ export default function doctorSignUp() {
         </div>
         <div className={styles.errorMessageWrap}>
           {!birthDateValid && <div>올바른 생일을 입력해주세요!</div>}
-        </div>
-        <div className={styles.inputTitle}>의사 면허번호</div>
-        <div className={styles.licenseDiv}>
-          <div className={styles.inputWrapForLicense}>
-            <input
-              className={styles.input}
-              type="text"
-              placeholder="면허번호를 입력해주세요"
-              value={license}
-              onChange={handleLicense}
-            />
-          </div>
-          <div className={styles.buttonDiv}>
-            <button className={styles.license}>면허번호 인증</button>
-          </div>
-        </div>
-        <div className={styles.errorMessageWrap}>
-          {!licenseValid && <div>면허번호 인증을 해주세요!</div>}
         </div>
       </div>
 
