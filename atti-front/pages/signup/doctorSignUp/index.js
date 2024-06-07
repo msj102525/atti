@@ -1,12 +1,13 @@
 import styles from "@/styles/signUp/doctorSignUp.module.css";
 import React, { useEffect, useState } from "react";
-import licenseValid from "@/pages/api/doctor/licenseValid";
+import { singUp } from "../../api/user";
 const User = {
   email: "test@example.com",
   pw: "test2323@@@",
 };
 
 export default function doctorSignUp() {
+  console.log("hello" + process.env.AUTH_PASS);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [pw2, setPw2] = useState("");
@@ -14,19 +15,26 @@ export default function doctorSignUp() {
   const [email, setEmail] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [code, setCode] = useState("");
+  const [emailReadOnly, setEmailReadOnly] = useState(false);
+  const [codeReadOnly, setCodeReadOnly] = useState(false);
 
   const [idValid, setIdValid] = useState(true);
   const [pwValid, setPwValid] = useState(true);
   const [pw2Valid, setPw2Valid] = useState(true);
-  const [notAllow, setNotAllow] = useState(true);
   const [nameValid, setNameValid] = useState(true);
-  const [emailValid, setEmailValid] = useState(true);
+  const [emailValid, setEmailValid] = useState(false);
   const [birthDateValid, setBirthDateValid] = useState(true);
   const [codeInput, setCodeInptut] = useState(false);
 
+  const [emailButtonColor, setEmailButtonColor] = useState("grey");
+  const [codeButtonColor, setCodeButtonColor] = useState("grey");
   //이메일 인증관련
   const [verificationCode, setVerificationCode] = useState("");
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(true);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   // useEffect(() => {
   //   if (emailValid && pwValid) {
   //     setNotAllow(false);
@@ -34,16 +42,31 @@ export default function doctorSignUp() {
   //   }
   //   setNotAllow(true);
   // }, [emailValid, pwValid]);
-  const handleEmailVerification = () => {
+  const handleEmailVerification = async () => {
     // 랜덤 코드 생성
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
     setCode(verificationCode);
-    // 랜덤 코드 출력 (실제로는 이메일 전송으로 대체되어야 함)
-    console.log(`Verification code sent to ${email}: ${verificationCode}`);
+    // 랜덤 코드 전송
+    await sendMail({ to: { email }, name: { name }, subject: { code } });
   };
-  const validCode = (e) => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = formData;
+    const singUpData = {
+      email: email,
+      password: password,
+    };
+    singUp(singUpData)
+      .then((res) => {
+        console.log("성공!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const sendCode = (e) => {
     setCodeInptut(true);
+    setEmailReadOnly(true);
     handleEmailVerification();
   };
   const handleId = (e) => {
@@ -88,6 +111,7 @@ export default function doctorSignUp() {
     setEmail(emailValue);
     if (emailValue.includes("@kma.org")) {
       setEmailValid(true);
+      setEmailButtonColor("mediumaquamarine");
     } else {
       setEmailValid(false);
     }
@@ -121,10 +145,13 @@ export default function doctorSignUp() {
     console.log(code);
     if (e.target.value == code) {
       setIsVerified(true);
+      setCodeButtonColor("mediumaquamarine");
+      setCodeReadOnly(true);
     } else {
       setIsVerified(false);
     }
   };
+
   return (
     <div className={styles.page}>
       <div className={styles.titleWrap}>의사 회원가입 페이지</div>
@@ -193,16 +220,24 @@ export default function doctorSignUp() {
               placeholder="의사협회 이메일을 입력해주세요"
               value={email}
               onChange={handleEmail}
+              readOnly={emailReadOnly}
             />
           </div>
           <div className={styles.buttonDiv}>
-            <button className={styles.license} onClick={sendCode}>
+            <button
+              className={styles.emailButton}
+              onClick={sendCode}
+              disabled={!emailValid}
+              style={{ backgroundColor: emailButtonColor }}
+            >
               확인코드 전송
             </button>
           </div>
         </div>
         <div className={styles.errorMessageWrap}>
-          {!emailValid && <div>올바른 이메일을 입력해주세요</div>}
+          {!emailValid && (
+            <div>의사협회 이메일을 입력해주세요 ! ex{")"} sample@kma.org</div>
+          )}
         </div>
         {codeInput && (
           <div>
@@ -214,12 +249,11 @@ export default function doctorSignUp() {
                   type="text"
                   placeholder="이메일로 전송온 코드를 입력해주세요!"
                   onChange={verifyCode}
+                  readOnly={codeReadOnly}
                 />
               </div>
-              <div className={styles.buttonDiv}>
-                <button className={styles.license} onClick={validCode}>
-                  이메일 인증
-                </button>
+              <div className={styles.successMessageWrap}>
+                {codeReadOnly && <div>인증성공!</div>}
               </div>
             </div>
             <div className={styles.errorMessageWrap}>
@@ -242,7 +276,7 @@ export default function doctorSignUp() {
       </div>
 
       <div>
-        <button onClick={onClickConfirmButton} className={styles.bottomButton}>
+        <button onClick={handleSubmit} className={styles.bottomButton}>
           회원가입
         </button>
       </div>

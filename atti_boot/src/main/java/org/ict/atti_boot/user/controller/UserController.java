@@ -19,6 +19,9 @@ public class UserController {
     public UserController(UserService userService){
         this.userService = userService;
     }
+    @GetMapping("/hello")
+        public String hello(){
+        return "hello";}
 
     @PostMapping("/user")
     public ResponseEntity<?> signUpUser(@RequestBody InputUser user) {
