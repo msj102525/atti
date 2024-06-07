@@ -28,8 +28,10 @@ public class UserDto {
     private char userType;
     private char gender;
     private String profileUrl;
+    private String loginType;
     private TokenLogin tokenLogin;
     private Set<SocialLogin> socialLogins;
+    private String snsAccessToken;
 
 
     public User toUserEntity(){
@@ -44,8 +46,10 @@ public class UserDto {
                 .userType(userType)
                 .gender(gender)
                 .profileUrl(profileUrl)
+                .loginType(loginType)
                 .tokenLogin(tokenLogin)
                 .socialLogins(socialLogins)
+                .snsAccessToken(snsAccessToken)
                 .build();
 
     }

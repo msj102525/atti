@@ -32,4 +32,5 @@ public class SocialLogin {
     @ManyToOne
     @JoinColumn(name = "USER_ID", insertable = false, updatable = false)
     private User user;
+
 }

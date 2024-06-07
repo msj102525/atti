@@ -10,7 +10,6 @@ import org.ict.atti_boot.user.model.dto.UserDto;
 import java.time.LocalDate;
 import java.util.Set;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,42 +19,47 @@ import java.util.Set;
 public class User {
 
     @Id
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false)
     private String userId;
 
     @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name = "USER_NAME")
+    @Column(name = "USER_NAME", nullable = false)
     private String userName;
 
     @Column(name = "NICK_NAME")
     private String nickName;
 
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "PHONE")
+    @Column(name = "PHONE", nullable = false)
     private String phone;
 
     @Column(name = "BIRTH_DATE")
     private LocalDate birthDate;
 
-    @Column(name = "USER_TYPE")
-    private char userType;
+    @Column(name = "USER_TYPE", nullable = false)
+    private Character userType;
 
-    @Column(name = "GENDER")
-    private char gender;
+    @Column(name = "GENDER", nullable = false)
+    private Character gender;
 
     @Column(name = "PROFILE_URL")
     private String profileUrl;
+
+    @Column(name = "login_type")
+    private String loginType;
+
+    @Column(name = "sns_access_token", nullable = true)
+    private String snsAccessToken;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private TokenLogin tokenLogin;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<SocialLogin> socialLogins;
-
 
     public UserDto toUserDto(){
         return UserDto.builder()
@@ -69,10 +73,9 @@ public class User {
                 .userType(userType)
                 .gender(gender)
                 .profileUrl(profileUrl)
+                .loginType(loginType)
                 .tokenLogin(tokenLogin)
                 .socialLogins(socialLogins)
                 .build();
-
     }
-
 }

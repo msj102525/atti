@@ -40,6 +40,7 @@ public class TokenLogin {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USER_ID", referencedColumnName = "user_id")
     private User user;
+
 }

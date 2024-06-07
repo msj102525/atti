@@ -28,6 +28,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final ComparablePath<Character> gender = createComparable("gender", Character.class);
 
+    public final StringPath loginType = createString("loginType");
+
     public final StringPath nickName = createString("nickName");
 
     public final StringPath password = createString("password");
@@ -35,6 +37,8 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath phone = createString("phone");
 
     public final StringPath profileUrl = createString("profileUrl");
+
+    public final StringPath snsAccessToken = createString("snsAccessToken");
 
     public final SetPath<SocialLogin, QSocialLogin> socialLogins = this.<SocialLogin, QSocialLogin>createSet("socialLogins", SocialLogin.class, QSocialLogin.class, PathInits.DIRECT2);
 

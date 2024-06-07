@@ -5,12 +5,21 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.ict.atti_boot.security.jwt.util.JWTUtil;
+import org.ict.atti_boot.security.model.entity.RefreshToken;
 import org.ict.atti_boot.security.service.RefreshService;
+import org.ict.atti_boot.user.jpa.entity.User;
 import org.ict.atti_boot.user.model.service.UserService;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 public class CustomLogoutHandler implements LogoutHandler {
@@ -48,26 +57,26 @@ public class CustomLogoutHandler implements LogoutHandler {
 
             // 만료 여부와 상관없이 사용자 정보를 조회하여 로그아웃 처리를 합니다.
             String userName = jwtUtil.getUserEmailFromToken(token);
-//            Optional<User> userOptional = userService.findByEmail(userName);
-//            if (userOptional.isPresent()) {
-//                User user = userOptional.get();
-//
-//                // 카카오 로그아웃 처리
-//                if ("kakao".equals(user.getLoginType())) {
-//                    String kakaoAccessToken = user.getSnsAccessToken(); // 저장된 카카오 액세스 토큰 사용
-//                    String kakaoLogoutUrl = "https://kapi.kakao.com/v1/user/logout";
-//                    HttpHeaders headers = new HttpHeaders();
-//                    headers.set("Authorization", "Bearer " + kakaoAccessToken);
-//
-//                    HttpEntity<String> kakaoRequestEntity = new HttpEntity<>(headers);
-//                    RestTemplate restTemplate = new RestTemplate();
-//                    ResponseEntity<String> kakaoResponse = restTemplate.exchange(kakaoLogoutUrl, HttpMethod.POST, kakaoRequestEntity, String.class);
-//                    log.info("Kakao logout response = {}", kakaoResponse.getBody());
-//                }
-//
-//                Optional<RefreshToken> refresh = refreshService.findByUserId(user.getId());
-//                refresh.ifPresent(refreshToken -> refreshService.deleteByRefresh(refreshToken.getTokenValue()));
-//            }
+            Optional<User> userOptional = userService.findByEmail(userName);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+
+                // 카카오 로그아웃 처리
+                if ("kakao".equals(user.getLoginType())) {
+                    String kakaoAccessToken = user.getSnsAccessToken(); // 저장된 카카오 액세스 토큰 사용
+                    String kakaoLogoutUrl = "https://kapi.kakao.com/v1/user/logout";
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.set("Authorization", "Bearer " + kakaoAccessToken);
+
+                    HttpEntity<String> kakaoRequestEntity = new HttpEntity<>(headers);
+                    RestTemplate restTemplate = new RestTemplate();
+                    ResponseEntity<String> kakaoResponse = restTemplate.exchange(kakaoLogoutUrl, HttpMethod.POST, kakaoRequestEntity, String.class);
+                    log.info("Kakao logout response = {}", kakaoResponse.getBody());
+                }
+
+                Optional<RefreshToken> refresh = refreshService.findByUserId(UUID.fromString(user.getUserId()));
+                refresh.ifPresent(refreshToken -> refreshService.deleteByRefresh(refreshToken.getTokenValue()));
+            }
         }
 
         // 성공적인 로그아웃 응답을 설정합니다.
