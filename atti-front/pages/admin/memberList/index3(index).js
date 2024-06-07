@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { observer } from "mobx-react";
 import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from 'react-query';
 import MemberCard from "/components/admin/MemberCard"; // MemberCard 컴포넌트 가져오기
-import styles from "@/styles/admin/memberList.module.css";
+
 //import { getMemberList, deleteMember } from "../../api/member"; // 회원 관련 API 함수 가져오기
 //import { handleAxiosError } from "../../api/errorAxiosHandle"; // 오류 처리 함수 가져오기
 
@@ -91,7 +91,7 @@ const MemberListComponent = observer(() => {
     if (!data) return <div>No data</div>; // 데이터가 없을 때 표시
 
     return (
-        <div className={styles.container}>
+        <div className="container mt-5">
             <h2>회원 리스트</h2>
             <div style={{ height: "2vw", justifyContent: "center", textAlign: "right" }}>
                 <select value={size} onChange={handleSizeChange} style={{ height: "88%" }}>
@@ -103,7 +103,7 @@ const MemberListComponent = observer(() => {
                 <input type="text" placeholder="아이디 검색..." value={searchInput} onChange={handleSearchChange} onKeyDown={handleKeyPress} />
                 <button onClick={executeSearch}>검색</button>
             </div>
-            <table className={styles.table}>
+            <table className="table">
                 <thead>
                     <tr>
                         <th style={{ width: "5vw", textAlign: "center" }}>회원아이디</th>
