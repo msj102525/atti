@@ -18,11 +18,6 @@ body {
     height: 100%;
 }
 
-a {
-    text-decoration: none;
-    color: #000;
-}
-
 ul,
 li {
     list-style: none;
@@ -32,15 +27,27 @@ input {
     outline: none;
 }
 
-@media screen and (max-width: 1050px) {
+html {
+    font-family: sans-serif;
+    font-weight: 600;
+}
+
+@media screen and (max-width: 1380px) {
     html {
         font-size: 14px;
     }
 }
 
 
-@media screen and (max-width: 770px) {
+@media screen and (max-width: 1000px) {
     html {
-        font-size: 12px;
+        font-size: 11px;
+    }
+}
+
+
+@media screen and (max-width: 900px) {
+    html {
+        font-size: 10px;
     }
 }

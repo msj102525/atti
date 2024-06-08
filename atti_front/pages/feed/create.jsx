@@ -1,10 +1,10 @@
 import Header from "../common/Header";
 import FeedNav from "@/components/feed/FeedNav";
 import FeedSideBar from "@/components/feed/FeedSideBar";
-import FeedList from "@/components/feed/FeedList";
+import FeedWriteForm from "@/components/feed/FeedWriteForm";
 import { useState } from "react";
 
-export default function Feed() {
+export default function FeedWrite() {
     const [data, setData] = useState("");
     const getData = childData => {
         setData(childData);
@@ -21,9 +21,12 @@ export default function Feed() {
                 </div>
                 <div className="border-solid border flex-1">
                     <FeedNav getData={getData} />
-                    <FeedList category={data} />
+                    <FeedWriteForm />
                 </div>
             </div>
         </div>
     )
 }
+
+
+
