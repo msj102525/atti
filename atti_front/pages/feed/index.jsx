@@ -1,13 +1,9 @@
-import { usePathname } from "next/navigation";
-
+import Header from "../common/Header";
 export default function Feed() {
-    // const path = usePathname();
-    // console.log(path);
-    // const componentType = typeof window === 'undefined' ? 'server' : 'client';
-    // console.log(componentType);
 
     return (
-        <div className="">
+        <div>
+            <Header />
             커뮤니티 페이지
         </div>
     )

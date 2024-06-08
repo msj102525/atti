@@ -1,13 +1,10 @@
-import React from 'react';
 import Link from 'next/link';
 import styles from "@/styles/common/header.module.css";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 
 export default function Navigation() {
-    const path = usePathname();
-    console.log(path);
-    const componentType = typeof window === 'undefined' ? 'server' : 'client';
-    console.log(componentType);
+    const params = usePathname();
+    console.log(`Navigation.jsx Path : ${params}`);
 
     return (
         <header className="text-black relative after:content-[''] after:block after:w-full after:h-px after:bg-gray-400">
