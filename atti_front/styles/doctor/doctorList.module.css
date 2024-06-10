@@ -19,16 +19,26 @@
   padding-left: 20%;
   padding-right: 20%;
 }
+.doctorInfo {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+}
 
 .moveDetail {
   text-decoration: none;
   color: black;
+  position: absolute;
+  font-size: large;
+  bottom: 20px;
 }
 
 /*search bar*/
 .searchbar {
   width: 30%;
   height: auto;
-  border: 1px solid black;
+  border: 3px solid black;
   margin-right: 80px;
 }
