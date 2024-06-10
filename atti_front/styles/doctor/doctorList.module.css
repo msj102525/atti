@@ -1,0 +1,34 @@
+.doctorCard {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid black;
+  width: 100%;
+  height: auto;
+}
+.imageBox {
+  width: 250px;
+  height: auto;
+  float: right;
+}
+.profileImage {
+  width: 100%;
+  height: auto;
+}
+.container {
+  display: flex;
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+.moveDetail {
+  text-decoration: none;
+  color: black;
+}
+
+/*search bar*/
+.searchbar {
+  width: 30%;
+  height: auto;
+  border: 1px solid black;
+  margin-right: 80px;
+}
