@@ -1,5 +1,6 @@
 import styles from "../../styles/doctor/doctorList.module.css";
 import Link from "next/link";
+import Navigation from "@/components/common/Navigation";
 let doctorList = [
   {
     id: 1,
@@ -26,17 +27,20 @@ let doctorList = [
 ];
 export default function DoctorList() {
   return (
-    <div className={styles.container}>
-      <div className={styles.searchbar}></div>
-      <div className="docorCardView">
-        {doctorList.map((doctor) => (
-          <DoctorCard
-            id={doctor.id}
-            name={doctor.name}
-            comment={doctor.comment}
-            profileUrl={doctor.profileUrl}
-          />
-        ))}
+    <div className={styles.mainContainer}>
+      <Navigation />
+      <div className={styles.container}>
+        <div className={styles.searchbar}></div>
+        <div className={styles.docorCardView}>
+          {doctorList.map((doctor) => (
+            <DoctorCard
+              id={doctor.id}
+              name={doctor.name}
+              comment={doctor.comment}
+              profileUrl={doctor.profileUrl}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
