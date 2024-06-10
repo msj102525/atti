@@ -21,7 +21,7 @@ export default function FeedWrite() {
                 </div>
                 <div className="border-solid border flex-1">
                     <FeedNav getData={getData} />
-                    <FeedWriteForm />
+                    <FeedWriteForm category={data} />
                 </div>
             </div>
         </div>
