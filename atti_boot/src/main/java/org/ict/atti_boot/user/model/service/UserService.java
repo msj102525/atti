@@ -35,7 +35,7 @@ public class UserService {
         return userRepository.save(createUser(inputUser));
     }
 
-    private User createUser(InputUser user) {
+    private User createUser(InputUser user) {   //회원가입
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         return User.builder()
                 .userId(user.getUserId())
@@ -43,7 +43,6 @@ public class UserService {
                 .email(user.getEmail())
                 .password(encodedPassword)
                 .userType('U')
-
                 .build();
     }
 
@@ -52,17 +51,6 @@ public class UserService {
         return userRepository.findByEmail(username);
     }
 
-    @Transactional
-    public User signUpSnsUser(User user) {
-        userRepository.findByEmail(user.getEmail())
-                .ifPresent(u -> {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이메일이 이미 사용중입니다.");
-                });
-        return userRepository.save(user);
-    }
 
-    public void saveUser(User user) {
-        log.debug("User name: {}", user.getUserName());
-        userRepository.save(user);
-    }
+
 }
