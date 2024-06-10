@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from 'react-query';
 import MemberCard from "/components/admin/MemberCard"; // MemberCard 컴포넌트 가져오기
 import styles from "@/styles/admin/memberList.module.css";
-//import { getMemberList, deleteMember } from "../../api/member"; // 회원 관련 API 함수 가져오기
+import { getMemberList, deleteMember } from "/pages/api/admin/memberList"; // 회원 관련 API 함수 가져오기
 //import { handleAxiosError } from "../../api/errorAxiosHandle"; // 오류 처리 함수 가져오기
 
 
@@ -20,33 +20,45 @@ const MemberListComponent = observer(() => {
     const [isAdmin, setIsAdmin] = useState(false); // 관리자 여부 상태
 
     // 임시 목 데이터
-    const adminData = {
-        members: [
-            { id: 1, userId: 'user1', userName: 'User One', nickName: 'nickname01', email: 'user1@example.com'  },
-            { id: 2, userId: 'user2', userName: 'User Two', nickName: 'nickname02', email: 'user2@example.com' },
-            // 필요한 만큼 추가
-        ]
-    };
+    // const adminData = {
+    //     members: [
+    //         { id: 1, userId: 'user1', userName: 'User One', nickName: 'nickname01', email: 'user1@example.com'  },
+    //         { id: 2, userId: 'user2', userName: 'User Two', nickName: 'nickname02', email: 'user2@example.com' },
+    //         // 필요한 만큼 추가
+    //     ]
+    // };
 
-    const regularUserData = {
-        members: [
-            { id: 1, userId: 'user11', userName: 'User One', nickName: 'user01', email: 'user1@example.com'  },
-            { id: 2, userId: 'user22', userName: 'User Two', nickName: 'user02', email: 'user2@example.com' },
-        ]
-    };
+    // const regularUserData = {
+    //     members: [
+    //         { id: 1, userId: 'user11', userName: 'User One', nickName: 'user01', email: 'user1@example.com'  },
+    //         { id: 2, userId: 'user22', userName: 'User Two', nickName: 'user02', email: 'user2@example.com' },
+    //     ]
+    // };
 
-    const data = isAdmin ? adminData : regularUserData;
-     // isLoading을 true로 설정
-    const isLoading = false; // 실제 데이터를 불러오는 경우에는 이 값을 사용
+    // const data = isAdmin ? adminData : regularUserData;
+    //  // isLoading을 true로 설정
+    // const isLoading = false; // 실제 데이터를 불러오는 경우에는 이 값을 사용
 
     // 회원 리스트 가져오기
-    // const { data, isLoading } = useQuery(['memberList', { page, size, searchField }], () => getMemberList({
-    //     searchField,
-    //     page: page - 1,
-    //     size: size,
-    // }), {
-    //     keepPreviousData: true, // 이전 데이터를 유지
-    // });
+    //   const { data, isLoading, error } = useQuery(['/admin/memberList', { page, size, searchField }], () => getMemberList({
+    //       searchField,
+    //       page: page - 1,
+    //       size
+    //       //size: size,
+    //   }), {
+    //       keepPreviousData: true, // 이전 데이터를 유지
+    //   });
+
+    const { data, isLoading, error } = useQuery(
+        '/admin/memberList',
+        () => getMemberList({  }),
+        {
+            keepPreviousData: true, // 이전 데이터를 유지
+        }
+    );
+
+
+   
 
     // 회원 삭제 뮤테이션
     // const deleteMemberMutation = useMutation(deleteMember, {
@@ -63,18 +75,18 @@ const MemberListComponent = observer(() => {
     const executeSearch = () => setSearchField(searchInput);
 
     // Enter 키 눌렀을 때 검색 실행
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            executeSearch();
-        }
-    };
+     const handleKeyPress = (e) => {
+         if (e.key === 'Enter') {
+             executeSearch();
+         }
+     };
 
     // 페이지 크기 변경 핸들러
     const handleSizeChange = (e) => setSize(e.target.value);
 
     // 관리자 여부 설정
     useEffect(() => {
-        setIsAdmin(localStorage.getItem("isAdmin") === "true");
+        //setIsAdmin(localStorage.getItem("isAdmin") === "true");
     }, []);
 
     // 회원 삭제 핸들러
@@ -82,12 +94,14 @@ const MemberListComponent = observer(() => {
     //     deleteMemberMutation.mutate(memberId);
     // };
 
-    const handleDelete = (memberId) => {
-        console.log(`Delete member with ID: ${memberId}`);
-        // deleteMemberMutation.mutate(memberId);
-    };
+    // const handleDelete = (memberId) => {
+    //     console.log(`Delete member with ID: ${memberId}`);
+    //     // deleteMemberMutation.mutate(memberId);
+    // };
 
     if (isLoading) return <div>Loading...</div>; // 로딩 중일 때 표시
+    //밑에 한 줄 추가
+    if (error) return <div>Error loading data: {error.message}</div>;
     if (!data) return <div>No data</div>; // 데이터가 없을 때 표시
 
     return (
@@ -115,7 +129,8 @@ const MemberListComponent = observer(() => {
                 </thead>
                 <tbody>
                     {data.members.map(member => (
-                        <MemberCard key={member.id} user={member} onDelete={handleDelete} />
+                        <MemberCard key={member.id} user={member}  />
+                        //onDelete={handleDelete} 위에 구문에 원래 있던 것
                     ))}
                 </tbody>
             </table>
